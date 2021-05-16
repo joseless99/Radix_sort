@@ -1,4 +1,10 @@
-// implementation of radix sort using bin/bucket sort
+/**
+ *@file Radix_sort_parallel_omp.cc
+ *@author: Juan Jose Ropero Cerro 
+ *@brief: Codigo de implementacion paralela del algoritmo de ordenacion Radix de vectores con OMP
+ *
+ *Este codigo ha sido creado a partir del codigo secuencial incluido en este repositorio y tomado de la pagina https://www.geeksforgeeks.org/radix-sort/
+**/
 #include<cstdio>
 #include <iostream>
 #include <bits/stdc++.h>
@@ -76,38 +82,36 @@ int digits(int n)
         i++;
     return i;
 }
- 
+/**
+ *@brief Funcion que lleva a cabo la ordenacion del vectr arr con el algoritmo Radix
+ *
+ **/
 void radix_sort(vector<int>& arr)
 {
     omp_set_num_threads(Nthreads);
-    // size of the array to be sorted
+    
+    //Tamaño del vector
     int sz = arr.size();
-    int id,j,pos;
-    // getting the maximum element in the array
+    int id,j,pos;//Variable usadas en la seccion paralela privadas a cad hilo
+    
+    //Conseguimos el elemento mayor del vector
     int max_val = *max_element(arr.begin(), arr.end());
  
-    // getting digits in the maximum element
+    // Conseguimos el maximo numero de digitos del mayor elemento del vector
     int d = digits(max_val);
  
-    // creating buckets to store the pointers
     node** bins;
  
-    // array of pointers to linked list of size 10 as
-    // integers are decimal numbers so they can hold numbers
-    // from 0-9 only, that's why size of 10
- 
+    
     bins = new node*[10*Nthreads];
 
-    // intializing the hash array with null to all
     for (int i = 0; i < 10*Nthreads; i++)
         bins[i] = NULL;
 
  
-    // first loop working for a constan time only and inner
-    // loop is iterating through the array to store elements
-    // of array in the linked list by their digits value
     for (int i = 0; i < d; i++) 
-    {   
+    { 
+        //Seccion paralela del algoritmo radix
         #pragma omp parallel shared (arr,i)private (id,j,pos)
         {   
             id=omp_get_thread_num();
@@ -120,7 +124,7 @@ void radix_sort(vector<int>& arr)
 
 
         int x = 0, y = 0,z=0;
-        // write back to the array after each pass
+        //Rescritura del vector leyendo las cubetas de los hilos
         while (x < 10) {
             for(z=0;z<Nthreads;z++){
                 while (bins[x+(10*z)] != NULL){

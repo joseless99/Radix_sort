@@ -1,4 +1,11 @@
-// implementation of radix sort using bin/bucket sort
+/**
+ *@file Radix_sort_secuential.cc
+ *@author: https://www.geeksforgeeks.org/radix-sort/
+ *@brief: Codigo de implementacion secuencial del algoritmo de ordenacion Radix de vectores
+ *
+ *Este codigo de la pagina https://www.geeksforgeeks.org/radix-sort/ ha sido copiado y utilizado para el trabajo de Aquitecturas Paralelas basado en el algoritmo
+ *de ordenacion Radix. Todo credito de creacion de este codigo secuencial pertenece a los autores de la pagina incluida en el documento 
+**/
 #include<cstdio>
 #include <iostream>
 #include <bits/stdc++.h>
